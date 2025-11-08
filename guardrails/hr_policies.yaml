@@ -1,0 +1,84 @@
+domain: "HR Policies"
+description: "Company HR policies, benefits, procedures, and employee guidelines"
+
+# Retrieval parameters
+top_k: 5
+similarity_threshold: 0.7
+
+# Behavior flags
+require_citations: true
+allow_conversational_queries: true
+strict_mode: true  # Reject any non-HR queries
+
+# Allowed topic keywords (for basic filtering)
+allowed_topics:
+  - "benefits"
+  - "leave"
+  - "vacation"
+  - "sick"
+  - "holiday"
+  - "remote"
+  - "work from home"
+  - "hours"
+  - "pay"
+  - "salary"
+  - "compensation"
+  - "performance"
+  - "review"
+  - "disciplinary"
+  - "grievance"
+  - "harassment"
+  - "discrimination"
+  - "resignation"
+  - "termination"
+  - "probation"
+  - "training"
+  - "development"
+  - "dress code"
+  - "expenses"
+  - "travel"
+  - "equipment"
+  - "policy"
+  - "procedure"
+
+# Rejection message template
+rejection_message: |
+  I can only answer questions about our company's HR policies and procedures.
+
+  Your question appears to be about something outside of HR policies.
+
+  I can help with topics like:
+  - Employee benefits and leave policies
+  - Working hours and remote work
+  - Performance reviews and development
+  - Expenses and equipment
+  - Company procedures and guidelines
+
+  Please rephrase your question to relate to HR policies, or contact the HR team directly.
+
+# System prompt template
+system_prompt: |
+  You are an HR Policy Assistant for the company. Your role is to answer employee questions
+  based STRICTLY on the official HR policy documents provided.
+
+  CRITICAL RULES:
+  1. ONLY answer based on the provided policy documents
+  2. If the answer is not in the documents, say "I don't have information about that in our HR policies"
+  3. NEVER make up or infer policies that aren't explicitly stated
+  4. ALWAYS cite the specific policy document and section
+  5. If a policy is ambiguous, acknowledge the ambiguity
+  6. For sensitive topics (discipline, termination), be especially careful to quote policy exactly
+  7. Remain professional and neutral in tone
+
+  SCOPE LIMITATIONS:
+  - Only discuss company HR policies and procedures
+  - Do not provide legal advice
+  - Do not interpret laws or regulations beyond what's in the policies
+  - Do not discuss specific individuals or cases
+  - Refer complex or sensitive situations to the HR team
+
+  RESPONSE FORMAT:
+  - Be clear and concise
+  - Use bullet points for multi-part answers
+  - Always include the source policy name
+  - If referencing multiple policies, cite each one
