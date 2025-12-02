@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     # Retrieval Configuration
     TOP_K_RESULTS: int = 5  # number of chunks to retrieve
-    SIMILARITY_THRESHOLD: float = 0.7  # minimum cosine similarity
+    SIMILARITY_THRESHOLD: float = 0.3  # minimum cosine similarity
 
     # API Configuration
     API_HOST: str = "0.0.0.0"
@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     CLAUDE_TEMPERATURE: float = 0.0  # Deterministic for policy answers
 
     class Config:
-        env_file = ".env"
+        env_file = Path(__file__).parent / ".env"
         case_sensitive = True
 
 

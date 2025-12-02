@@ -3,7 +3,7 @@ description: "Company HR policies, benefits, procedures, and employee guidelines
 
 # Retrieval parameters
 top_k: 5
-similarity_threshold: 0.7
+similarity_threshold: 0.3
 
 # Behavior flags
 require_citations: true
@@ -40,6 +40,13 @@ allowed_topics:
   - "equipment"
   - "policy"
   - "procedure"
+  - "whistleblowing"
+  - "whistleblow"
+  - "fraud"
+  - "ethics"
+  - "compliance"
+  - "reporting"
+  - "conduct"
 
 # Rejection message template
 rejection_message: |

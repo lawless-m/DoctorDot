@@ -18,6 +18,7 @@ class VectorStore:
         self.collection_name = collection_name
         self.db_path = settings.DUCKDB_PATH / f"{collection_name}.duckdb"
         self.conn: Optional[duckdb.DuckDBPyConnection] = None
+        self.embedding_dim: Optional[int] = None
 
     def connect(self):
         """Establish connection to DuckDB."""
@@ -28,6 +29,9 @@ class VectorStore:
         self.conn.execute("INSTALL vss;")
         self.conn.execute("LOAD vss;")
 
+        # Enable experimental HNSW persistence
+        self.conn.execute("SET hnsw_enable_experimental_persistence = true;")
+
     def initialize_schema(self, embedding_dimension: int):
         """
         Create the schema for storing document chunks and embeddings.
@@ -35,6 +39,7 @@ class VectorStore:
         Args:
             embedding_dimension: Dimensionality of embedding vectors
         """
+        self.embedding_dim = embedding_dimension
         self.conn.execute(f"""
             CREATE TABLE IF NOT EXISTS documents (
                 chunk_id VARCHAR PRIMARY KEY,
@@ -111,17 +116,21 @@ class VectorStore:
         top_k = top_k or settings.TOP_K_RESULTS
         similarity_threshold = similarity_threshold or settings.SIMILARITY_THRESHOLD
 
+        # Get embedding dimension if not set
+        if self.embedding_dim is None:
+            self.embedding_dim = len(query_embedding)
+
         # DuckDB VSS search with cosine similarity
-        results = self.conn.execute("""
+        results = self.conn.execute(f"""
             SELECT
                 chunk_id,
                 document_name,
                 page_number,
                 chunk_index,
                 chunk_text,
-                array_cosine_similarity(embedding, ?::FLOAT[]) as similarity
+                array_cosine_similarity(embedding, ?::FLOAT[{self.embedding_dim}]) as similarity
             FROM documents
-            WHERE array_cosine_similarity(embedding, ?::FLOAT[]) >= ?
+            WHERE array_cosine_similarity(embedding, ?::FLOAT[{self.embedding_dim}]) >= ?
             ORDER BY similarity DESC
             LIMIT ?
         """, [query_embedding, query_embedding, similarity_threshold, top_k]).fetchall()

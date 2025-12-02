@@ -17,21 +17,32 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend, disabled = false })
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask a question about HR policies..."
-        disabled={disabled}
-        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-      />
+    <form onSubmit={handleSubmit} className="flex gap-3">
+      <div className="flex-1 relative">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask me about holidays, sick leave, policies..."
+          disabled={disabled}
+          className="w-full px-6 py-4 border-2 border-gray-300 rounded-2xl focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 disabled:bg-gray-50 disabled:text-gray-400 transition-all shadow-md text-base"
+        />
+        {disabled && (
+          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            <div className="flex gap-1">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </div>
+          </div>
+        )}
+      </div>
       <button
         type="submit"
         disabled={disabled || !input.trim()}
-        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+        className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg font-semibold"
       >
-        {disabled ? 'Thinking...' : 'Send'}
+        {disabled ? 'Thinking...' : 'Ask'}
       </button>
     </form>
   );

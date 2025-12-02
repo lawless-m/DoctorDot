@@ -44,8 +44,8 @@ class ClaudeClient:
         if conversation_history:
             for msg in conversation_history:
                 messages.append({
-                    "role": msg["role"],
-                    "content": msg["content"]
+                    "role": msg.role,
+                    "content": msg.content
                 })
 
         # Add current query with context
